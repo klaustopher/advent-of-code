@@ -9,7 +9,7 @@ namespace AdventOfCode2019
     {
         private int calculateFuel(int mass)
         {
-            return ((mass / 3) - 2);  
+            return ((mass / 3) - 2);
         }
         public string findResult()
         {

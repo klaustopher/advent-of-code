@@ -17,7 +17,10 @@ namespace AdventOfCode2019
         public string findResult()
         {
 
-            List<int> items = Resources.Day1.Split(System.Environment.NewLine.ToCharArray()).Where(x => !string.IsNullOrEmpty(x)).Select(str => int.Parse(str)).ToList();
+            List<int> items = Resources.Day1.Split(System.Environment.NewLine.ToCharArray()).
+                Where(x => !string.IsNullOrEmpty(x)).
+                Select(str => int.Parse(str)).
+                ToList();
 
             int result = items.Select(mass => calculateFuel(mass)).Sum();
 
