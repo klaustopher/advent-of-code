@@ -2,18 +2,29 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Xunit;
 
 namespace AdventOfCode2019
 {
-    class Day12 : Challenge
+    public class Day12 : Challenge
     {
-        private int calculateFuel(int mass)
+        private int CalculateFuel(int mass)
         {
             int fuelMass = ((mass / 3) - 2);
             if (fuelMass <= 0) { return 0; }
 
-            return fuelMass + calculateFuel(fuelMass);
+            return fuelMass + CalculateFuel(fuelMass);
         }
+
+        [Theory]
+        [InlineData(14, 2)]
+        [InlineData(1969, 966)]
+        [InlineData(100756, 50346)]
+        public void CalculatesCorrectFuelWeight(int mass, int expectedFuelWeight)
+        {
+            Assert.Equal(expectedFuelWeight, CalculateFuel(mass));
+        }
+
         public string findResult()
         {
 
@@ -22,7 +33,7 @@ namespace AdventOfCode2019
                 Select(str => int.Parse(str)).
                 ToList();
 
-            int result = items.Select(mass => calculateFuel(mass)).Sum();
+            int result = items.Select(mass => CalculateFuel(mass)).Sum();
 
 
             return result.ToString();
