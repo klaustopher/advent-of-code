@@ -5,5 +5,5 @@ def calculate_fuel(mass)
   fuel_mass + calculate_fuel(fuel_mass)
 end
 
-lines = File.read('day-1-1.txt').lines
+lines = File.read('day-1.txt').lines
 puts lines.sum { |l| calculate_fuel(l.to_i) }
