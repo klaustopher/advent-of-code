@@ -13,16 +13,15 @@ end
 
 def build_points(line)
   result = [Point.new(x: 0, y: 0)]
-
   line.each do |dir|
-    case dir.direction
-    when :r then dir.steps.times { prev_point = result.last; result << Point.new(x: prev_point.x + 1, y: prev_point.y) }
-    when :l then dir.steps.times { prev_point = result.last; result << Point.new(x: prev_point.x - 1, y: prev_point.y) }
-    when :u then dir.steps.times { prev_point = result.last; result << Point.new(x: prev_point.x, y: prev_point.y + 1) }
-    when :d then dir.steps.times { prev_point = result.last; result << Point.new(x: prev_point.x, y: prev_point.y - 1) }
-    end
+    prev_point = result.last
+    result += case dir.direction
+              when :r then 1.upto(dir.steps).map { |i| Point.new(x: prev_point.x + i, y: prev_point.y) }
+              when :l then 1.upto(dir.steps).map { |i| Point.new(x: prev_point.x - i, y: prev_point.y) }
+              when :u then 1.upto(dir.steps).map { |i| Point.new(x: prev_point.x, y: prev_point.y + i) }
+              when :d then 1.upto(dir.steps).map { |i| Point.new(x: prev_point.x, y: prev_point.y - i) }
+              end
   end
-
   result
 end
 
