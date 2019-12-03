@@ -6,7 +6,7 @@ namespace AdventOfCode2019
     {
         static void Main(string[] args)
         {
-            Challenge challenge = new Day12();
+            Challenge challenge = new Day32();
             Console.WriteLine(challenge.findResult());
         }
     }
