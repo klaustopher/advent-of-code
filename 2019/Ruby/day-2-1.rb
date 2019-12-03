@@ -1,21 +1,11 @@
+require_relative 'int_computer'
 
-ram = File.read('day-2.txt').split(',').map(&:to_i)
-pointer = 0
+code = File.read('day-2.txt').split(',').map(&:to_i)
 
-ram[1] = 12
-ram[2] = 2
+code[1] = 12
+code[2] = 2
 
-loop do
-  puts ram[(pointer)..(pointer+3)].join(',')
-  if ram[pointer] == 1
-    ram[ram[pointer + 3]] = ram[ram[pointer + 1]] + ram[ram[pointer + 2]]
-    pointer += 4
-  elsif ram[pointer] == 2
-    ram[ram[pointer + 3]] = ram[ram[pointer + 1]] * ram[ram[pointer + 2]]
-    pointer += 4
-  elsif ram[pointer] == 99
-    break
-  end
-end
+icm = IntComputer.new(code)
+icm.run
 
-puts ram.join(',')
+puts icm.read(0)
