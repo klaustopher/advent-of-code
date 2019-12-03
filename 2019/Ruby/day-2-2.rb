@@ -1,25 +1,13 @@
+require_relative 'int_computer'
 
 input = File.read('day-2.txt').split(',').map(&:to_i)
 
-def compute(ram, noun, verb)
-  pointer = 0
-
-  ram[1] = noun
-  ram[2] = verb
-
-  loop do
-    if ram[pointer] == 1
-      ram[ram[pointer + 3]] = ram[ram[pointer + 1]] + ram[ram[pointer + 2]]
-      pointer += 4
-    elsif ram[pointer] == 2
-      ram[ram[pointer + 3]] = ram[ram[pointer + 1]] * ram[ram[pointer + 2]]
-      pointer += 4
-    elsif ram[pointer] == 99
-      break
-    end
-  end
-
-  ram[0]
+def compute(code, noun, verb)
+  code[1] = noun
+  code[2] = verb
+  icm = IntComputer.new(code)
+  icm.run
+  icm.read(0)
 end
 
 0.upto(99).each do |noun|
