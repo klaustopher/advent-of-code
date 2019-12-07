@@ -1,15 +1,20 @@
 class IntComputer
-  def initialize(code, inputs: [])
-    @memory = code
+  def initialize(code, inputs: [], name: nil)
+    @memory = code.dup
     @pointer = 0
     @inputs = inputs
     @output = []
+    @waiting = false
+    @ended = false
+    @name = name
   end
 
-  attr_reader :pointer, :inputs, :output
+  attr_reader :pointer, :inputs, :output, :waiting, :ended
 
   def run
-    while(pointer < @memory.length) do
+    @waiting = false
+
+    while(!@ended && !@waiting) do
       instruction = read(pointer)
       case instruction % 100
       when 1 # add 
@@ -19,10 +24,17 @@ class IntComputer
         write_indirect(pointer + 3, read_argument_with_mode(1) * read_argument_with_mode(2))
         self.pointer += 4
       when 3 # store input
-        write_indirect(pointer + 1, inputs.shift)
-        self.pointer += 2
+        if inputs.length == 0
+          puts "[#{@name}] waiting for input" if @name
+          @waiting = true
+        else
+          puts "[#{@name}] using input #{inputs.first}" if @name
+          write_indirect(pointer + 1, inputs.shift)
+          self.pointer += 2
+        end
       when 4 # output memory
         output << read_argument_with_mode(1)
+        puts "[#{@name}] outputting #{output.last}" if @name
         self.pointer += 2
       when 5 # jump if true
         if read_argument_with_mode(1) != 0
@@ -43,7 +55,7 @@ class IntComputer
         write_indirect(pointer + 3, read_argument_with_mode(1) == read_argument_with_mode(2) ? 1 : 0)
         self.pointer += 4
       when 99 # exit
-        break
+        @ended = true
       end
     end
   end
