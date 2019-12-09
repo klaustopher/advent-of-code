@@ -1,27 +1,32 @@
 class IntComputer
   def initialize(code, inputs: [], name: nil)
-    @memory = code.dup
+    @memory = Array.new(4096, 0)
+    code.each_with_index { |op, i| @memory[i] = op }
     @pointer = 0
+    @relative_base = 0
     @inputs = inputs
     @output = []
     @waiting = false
     @ended = false
     @name = name
+
+    @instruction = 0
+    @parameter_modes = []
   end
 
-  attr_reader :pointer, :inputs, :output, :waiting, :ended
+  attr_reader :pointer, :inputs, :output, :waiting, :ended, :relative_base, :instruction, :parameter_modes
 
   def run
     @waiting = false
 
     while(!@ended && !@waiting) do
-      instruction = read(pointer)
-      case instruction % 100
+      parse_instruction!(pointer)
+      case self.instruction
       when 1 # add 
-        write_indirect(pointer + 3, read_argument_with_mode(1) + read_argument_with_mode(2))
+        write_to_argument_with_mode(3, read_argument_with_mode(1) + read_argument_with_mode(2))
         self.pointer += 4
       when 2 # multiply
-        write_indirect(pointer + 3, read_argument_with_mode(1) * read_argument_with_mode(2))
+        write_to_argument_with_mode(3, read_argument_with_mode(1) * read_argument_with_mode(2))
         self.pointer += 4
       when 3 # store input
         if inputs.length == 0
@@ -29,7 +34,7 @@ class IntComputer
           @waiting = true
         else
           puts "[#{@name}] using input #{inputs.first}" if @name
-          write_indirect(pointer + 1, inputs.shift)
+          write_to_argument_with_mode(1, inputs.shift)
           self.pointer += 2
         end
       when 4 # output memory
@@ -49,19 +54,29 @@ class IntComputer
           self.pointer += 3
         end
       when 7 # less than
-        write_indirect(pointer + 3, read_argument_with_mode(1) < read_argument_with_mode(2) ? 1 : 0)
+        write_to_argument_with_mode(3, read_argument_with_mode(1) < read_argument_with_mode(2) ? 1 : 0)
         self.pointer += 4
       when 8 # equals
-        write_indirect(pointer + 3, read_argument_with_mode(1) == read_argument_with_mode(2) ? 1 : 0)
+        write_to_argument_with_mode(3, read_argument_with_mode(1) == read_argument_with_mode(2) ? 1 : 0)
         self.pointer += 4
+      when 9 # adjust relative base
+        self.relative_base += read_argument_with_mode(1)
+        self.pointer += 2
       when 99 # exit
         @ended = true
+      else
+        raise "Unknown OpCode #{instruction} encountered"
       end
     end
   end
 
+  def parse_instruction!(address)
+    @instruction = read(address) % 100
+    @parameter_modes = (read(address) / 100).digits 
+  end
+
   def dump_memory
-    puts @memory
+    puts @memory.inspect
   end
 
   def read(address)
@@ -74,7 +89,7 @@ class IntComputer
 
   private
 
-  attr_writer :pointer
+  attr_writer :pointer, :relative_base
 
   def write(address, value)
     @memory[address] = value
@@ -84,12 +99,23 @@ class IntComputer
     write(read(address), value)
   end
 
+  def write_to_argument_with_mode(position, value)
+    mode = position <= parameter_modes.length ? parameter_modes[position - 1] : 0
+
+    if mode == 2
+      write(read(pointer+position) + relative_base, value)
+    else
+      write(read(pointer+position), value)
+    end
+  end
+
   def read_argument_with_mode(position)
-    parameter_modes = (read(pointer) / 100).digits
     mode = position <= parameter_modes.length ? parameter_modes[position - 1] : 0
 
     if mode == 1
       read(pointer + position)
+    elsif mode == 2
+      read(relative_base + read(pointer + position))
     else
       read_indirect(pointer + position)
     end
