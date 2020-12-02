@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require_relative 'int_computer'
 
 code = File.read('day-5.txt').split(',').map(&:to_i)
 
-inputs = [ 1 ]
+inputs = [1]
 
 icm = IntComputer.new(code, inputs: inputs)
 icm.run

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'awesome_print'
 
@@ -14,7 +15,7 @@ cols = 0
 points = []
 
 File.open('day6.txt', 'r') do |f|
-  while !f.eof?
+  until f.eof?
     x, y = f.readline.split(',').map(&:strip).map(&:to_i)
 
     cols = [cols, x].max
@@ -41,7 +42,7 @@ closest_to_count = Hash.new(0)
 0.upto(rows) do |y|
   0.upto(cols) do |x|
     points_by_distance = points.map do |point|
-      { point: point, distance: point.distance(Point.new(x,y)) }
+      { point: point, distance: point.distance(Point.new(x, y)) }
     end.sort_by { |entry| entry[:distance] }
 
     if points_by_distance[0][:distance] == points_by_distance[1][:distance]
@@ -51,7 +52,7 @@ closest_to_count = Hash.new(0)
 
       # there is one closest point ... if we are on the outermost area of the grid,
       # we can eliminate another point because this must also be one with an infinite area
-      if y == 0 || y == rows || x == 0 || x == cols
+      if y.zero? || y == rows || x.zero? || x == cols
         considerable_points.delete(point)
         closest_to_count[point] = 0
       else
@@ -68,7 +69,7 @@ MAXIMUM_DISTANCE = 10_000
 
 0.upto(rows) do |y|
   0.upto(cols) do |x|
-    total_distance = points.sum { |point| point.distance(Point.new(x,y)) }
+    total_distance = points.sum { |point| point.distance(Point.new(x, y)) }
     area_count += 1 if total_distance < MAXIMUM_DISTANCE
   end
 end

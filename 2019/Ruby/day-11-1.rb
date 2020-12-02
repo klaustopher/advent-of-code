@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './int_computer'
 require 'set'
 
@@ -46,36 +48,36 @@ $size = 150
 $grid = Array.new($size) { Array.new($size) { 0 } }
 $painted_tiles = Set.new
 
-$marker = Marker.new($size/2, $size/2, :up)
+$marker = Marker.new($size / 2, $size / 2, :up)
 
 icm = IntComputer.new(code, inputs: [$grid[$marker.y][$marker.x]])
 
 def paint_grid
   $grid.each_with_index do |row, y|
-    row.each_with_index  do |col, x|
+    row.each_with_index do |col, x|
       if $marker.x == x && $marker.y == y
         print case $marker.direction
-      when :up then '^'
-      when :down then 'v'
-      when :right then '<'
-      when :left then '>'
+              when :up then '^'
+              when :down then 'v'
+              when :right then '<'
+              when :left then '>'
+              end
+      else
+        print col == 1 ? '#' : '.'
       end
-    else
-      print col == 1 ? '#' : '.'
     end
+    puts
   end
-  puts
-end
 end
 
-while(!icm.ended) do
+until icm.ended
   icm.run
 
   color = icm.output.shift
   turning_direction = icm.output.shift
 
   $grid[$marker.y][$marker.x] = color
-  $painted_tiles << $marker.x*$size + $marker.y
+  $painted_tiles << $marker.x * $size + $marker.y
 
   $marker.turn(turning_direction)
   icm.inputs << $grid[$marker.y][$marker.x]

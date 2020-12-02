@@ -9,9 +9,7 @@ data.each do |input|
 
   char_count = match[:password].chars.tally.fetch(match[:char], 0)
 
-  if char_count >= match[:min].to_i && char_count <= match[:max].to_i
-    valid_passwords += 1
-  end
+  valid_passwords += 1 if char_count >= match[:min].to_i && char_count <= match[:max].to_i
 end
 
 puts valid_passwords

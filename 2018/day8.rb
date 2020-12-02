@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'awesome_print'
 
@@ -11,7 +12,7 @@ class Node
   end
 
   def sum
-    if children.size == 0
+    if children.size.zero?
       metadata.inject(:+)
     else
       metadata.map do |child_index|
@@ -21,14 +22,12 @@ class Node
   end
 
   def meta_sum
-     metadata.inject(:+).to_i + children.map(&:meta_sum).inject(:+).to_i
+    metadata.inject(:+).to_i + children.map(&:meta_sum).inject(:+).to_i
   end
 end
 
 File.open('day8.txt', 'r') do |f|
-  while !f.eof?
-    @items = f.readline.split(' ').map(&:strip).map(&:to_i)
-  end
+  @items = f.readline.split(' ').map(&:strip).map(&:to_i) until f.eof?
 end
 
 def read_node

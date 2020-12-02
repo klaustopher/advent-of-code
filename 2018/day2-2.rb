@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'set'
 
 entries = []
 
 File.open('day2.txt', 'r') do |f|
-  while !f.eof?
-    entries << f.readline.strip
-  end
+  entries << f.readline.strip until f.eof?
 end
 
 def div_letter_count(a_word, b_word)
@@ -34,7 +34,6 @@ def same_letters(a_word, b_word)
 
   word.join('')
 end
-
 
 entries.each do |entry_a|
   entries.each do |entry_b|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Point = Struct.new(:x, :y, keyword_init: true) do
   def distance
     x.abs + y.abs
@@ -7,7 +9,7 @@ Direction = Struct.new(:direction, :steps, keyword_init: true)
 
 def parse_line(line_string)
   line_string.split(',').map do |dir|
-    Direction.new(direction: dir[0].downcase.to_sym, steps: dir[1..-1].to_i)
+    Direction.new(direction: dir[0].downcase.to_sym, steps: dir[1..].to_i)
   end
 end
 

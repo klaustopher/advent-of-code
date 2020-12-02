@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IntComputer
   def initialize(code, inputs: [], name: nil)
     @memory = Array.new(4096, 0)
@@ -19,17 +21,17 @@ class IntComputer
   def run
     @waiting = false
 
-    while(!@ended && !@waiting) do
+    while !@ended && !@waiting
       parse_instruction!(pointer)
-      case self.instruction
-      when 1 # add 
+      case instruction
+      when 1 # add
         write_to_argument_with_mode(3, read_argument_with_mode(1) + read_argument_with_mode(2))
         self.pointer += 4
       when 2 # multiply
         write_to_argument_with_mode(3, read_argument_with_mode(1) * read_argument_with_mode(2))
         self.pointer += 4
       when 3 # store input
-        if inputs.length == 0
+        if inputs.length.zero?
           puts "[#{@name}] waiting for input" if @name
           @waiting = true
         else
@@ -42,13 +44,13 @@ class IntComputer
         puts "[#{@name}] outputting #{output.last}" if @name
         self.pointer += 2
       when 5 # jump if true
-        if read_argument_with_mode(1) != 0
-          self.pointer = read_argument_with_mode(2)
-        else
+        if read_argument_with_mode(1).zero?
           self.pointer += 3
+        else
+          self.pointer = read_argument_with_mode(2)
         end
       when 6 # jump if false
-        if read_argument_with_mode(1) == 0
+        if read_argument_with_mode(1).zero?
           self.pointer = read_argument_with_mode(2)
         else
           self.pointer += 3
@@ -72,7 +74,7 @@ class IntComputer
 
   def parse_instruction!(address)
     @instruction = read(address) % 100
-    @parameter_modes = (read(address) / 100).digits 
+    @parameter_modes = (read(address) / 100).digits
   end
 
   def dump_memory
@@ -89,35 +91,36 @@ class IntComputer
 
   private
 
-  attr_writer :pointer, :relative_base
+    attr_writer :pointer, :relative_base
 
-  def write(address, value)
-    @memory[address] = value
-  end
-
-  def write_indirect(address, value)
-    write(read(address), value)
-  end
-
-  def write_to_argument_with_mode(position, value)
-    mode = position <= parameter_modes.length ? parameter_modes[position - 1] : 0
-
-    if mode == 2
-      write(read(pointer+position) + relative_base, value)
-    else
-      write(read(pointer+position), value)
+    def write(address, value)
+      @memory[address] = value
     end
-  end
 
-  def read_argument_with_mode(position)
-    mode = position <= parameter_modes.length ? parameter_modes[position - 1] : 0
-
-    if mode == 1
-      read(pointer + position)
-    elsif mode == 2
-      read(relative_base + read(pointer + position))
-    else
-      read_indirect(pointer + position)
+    def write_indirect(address, value)
+      write(read(address), value)
     end
-  end
+
+    def write_to_argument_with_mode(position, value)
+      mode = position <= parameter_modes.length ? parameter_modes[position - 1] : 0
+
+      if mode == 2
+        write(read(pointer + position) + relative_base, value)
+      else
+        write(read(pointer + position), value)
+      end
+    end
+
+    def read_argument_with_mode(position)
+      mode = position <= parameter_modes.length ? parameter_modes[position - 1] : 0
+
+      case mode
+      when 1
+        read(pointer + position)
+      when 2
+        read(relative_base + read(pointer + position))
+      else
+        read_indirect(pointer + position)
+      end
+    end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 $input = File.read('day-16.txt').chars.map(&:to_i)
 
 def pattern(index, required_size)
@@ -12,7 +14,7 @@ def calculate_phase(input)
   [].tap do |result|
     0.upto(input.size - 1) do |index|
       p = pattern(index, input.size)
-      result << input.zip(p).map { |(a,b)| a * b }.sum.abs % 10
+      result << input.zip(p).map { |(a, b)| a * b }.sum.abs % 10
     end
   end
 end
