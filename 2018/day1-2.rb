@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'set'
 
 numbers = []
 
 File.open('day1.txt', 'r') do |f|
-  while !f.eof?
-    numbers << f.readline.to_i
-  end
+  numbers << f.readline.to_i until f.eof?
 end
 
 seen = Set.new

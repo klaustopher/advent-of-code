@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 content = File.read('day5.txt').strip
 
@@ -7,7 +8,7 @@ def eliminate(string)
   eliminated = false
   index = 0
 
-  while index < string.length - 1 do
+  while index < string.length - 1
     letter_a = string[index]
     letter_b = string[index + 1]
 
@@ -22,7 +23,7 @@ def eliminate(string)
 
   result << string[-1]
 
-  return [eliminated, result.join]
+  [eliminated, result.join]
 end
 
 def is_same_in_different_case?(letter_a, letter_b)
@@ -32,7 +33,7 @@ end
 # Strategy 1
 content1 = content
 loop do
- eliminated, content1 = eliminate(content1)
+  eliminated, content1 = eliminate(content1)
 
   unless eliminated
     puts "Shortest possible: #{content1.length}"
@@ -46,7 +47,7 @@ unique_chars.each do |uchar|
   test_content = content.gsub(uchar, '').gsub(uchar.upcase, '')
 
   loop do
-   eliminated, test_content = eliminate(test_content)
+    eliminated, test_content = eliminate(test_content)
 
     unless eliminated
       puts "Shortest possible by removing #{uchar}: #{test_content.length}"

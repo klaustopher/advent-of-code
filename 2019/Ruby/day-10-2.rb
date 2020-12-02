@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 
-Point = Struct.new(:x,:y, keyword_init: true) do
+Point = Struct.new(:x, :y, keyword_init: true) do
   def to_s
     "(#{x.to_i},#{y.to_i})"
   end
 
   def distance(other_point)
-    Math.sqrt((x-other_point.x).abs**2 + (y-other_point.y).abs**2)
+    Math.sqrt((x - other_point.x).abs**2 + (y - other_point.y).abs**2)
   end
 end
 
@@ -14,36 +15,34 @@ $asteroids = []
 input = File.read('day-10.txt')
 $starting_point = Point.new(x: 11.to_r, y: 19.to_r)
 
-=begin
-input = <<INPUT
-.#..##.###...#######
-##.############..##.
-.#.######.########.#
-.###.#######.####.#.
-#####.##.#.##.###.##
-..#####..#.#########
+# input = <<INPUT
+# .#..##.###...#######
+# #.############..##.
+# .#.######.########.#
+# .###.#######.####.#.
+# ####.##.#.##.###.##
+# ..#####..#.#########
 ####################
-#.####....###.#.#.##
-##.#################
-#####.##.###..####..
-..######..##.#######
-####.##.####...##..#
-.#####..#.######.###
-##...#.##########...
-#.##########.#######
-.####.#.###.###.#.##
-....##.##.###..#####
-.#.#.###########.###
-#.#.#.#####.####.###
-###.##.####.##.#..##
-INPUT
-
-$starting_point = Point.new(x: 11r, y: 13r)
-=end
+# .####....###.#.#.##
+# #.#################
+# ####.##.###..####..
+# ..######..##.#######
+# ###.##.####...##..#
+# .#####..#.######.###
+# #...#.##########...
+# .##########.#######
+# .####.#.###.###.#.##
+# ....##.##.###..#####
+# .#.#.###########.###
+# .#.#.#####.####.###
+# ##.##.####.##.#..##
+# INPUT
+#
+# $starting_point = Point.new(x: 11r, y: 13r)
 
 input.lines.each_with_index do |line, row|
   line.chars.each_with_index do |point, col|
-    $asteroids << Point.new(x: col.to_r, y: row.to_r) if point == "#"
+    $asteroids << Point.new(x: col.to_r, y: row.to_r) if point == '#'
   end
 end
 
@@ -85,7 +84,7 @@ def angle_between_points(from, to)
       90
     end
   else
-    result = Math.atan2(to.y-from.y, to.x-from.x) * 180.0 / Math::PI + 90.0
+    result = Math.atan2(to.y - from.y, to.x - from.x) * 180.0 / Math::PI + 90.0
     (result + 360) % 360
   end
 end
@@ -98,7 +97,7 @@ end
 
 destroyed_asteroid = 1
 
-while($asteroids.size > 0) do
+while $asteroids.size.positive?
   asteroids = visible_asteroids.sort_by { |ast| angle_between_points($starting_point, ast) }
 
   asteroids.each do |ast|
@@ -107,4 +106,3 @@ while($asteroids.size > 0) do
     destroyed_asteroid += 1
   end
 end
-

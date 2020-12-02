@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def calculate_fuel(mass)
   (mass / 3) - 2
 end

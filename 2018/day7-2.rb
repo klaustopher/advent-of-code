@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'awesome_print'
 
@@ -36,7 +37,7 @@ end
 @steps = Hash.new { |hash, key| hash[key] = Step.new(key) }
 
 File.open('day7.txt', 'r') do |f|
-  while !f.eof?
+  until f.eof?
     line = f.readline
     m = line.match(/Step ([A-Z]) must be finished before step ([A-Z]) can begin/)
 
@@ -66,8 +67,8 @@ def next_available_step
   considered_steps = @steps.values.reject(&:completed?).reject { |step| @workers.include?(step) }
 
   considered_steps.select do |step|
-    (step.prereqs - completed_steps).size == 0
-  end.sort_by(&:letter).first
+    (step.prereqs - completed_steps).size.zero?
+  end.min_by(&:letter)
 end
 
 def completed_steps
@@ -87,7 +88,6 @@ loop do
 
   @completed_order += @workers.compact.select(&:completed?).map(&:letter)
   break if @completed_order.count == @steps.count
-
 
   second += 1
 end

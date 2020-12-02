@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require_relative 'int_computer'
 
-code = File.read('day-7.txt').split(",").map(&:to_i)
+code = File.read('day-7.txt').split(',').map(&:to_i)
 results = []
 
-phase_settings = [0,1,2,3,4]
+phase_settings = [0, 1, 2, 3, 4]
 phase_settings.permutation.each do |phase_setting|
   last_output = 0
 

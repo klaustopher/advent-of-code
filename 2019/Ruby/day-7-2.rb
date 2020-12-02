@@ -1,16 +1,18 @@
+# frozen_string_literal: true
+
 require_relative 'int_computer'
 
-code = File.read('day-7.txt').split(",").map(&:to_i)
+code = File.read('day-7.txt').split(',').map(&:to_i)
 results = []
 
-phase_settings = [5,6,7,8,9]
+phase_settings = [5, 6, 7, 8, 9]
 
 amplifiers = [
-    IntComputer.new(code),
-    IntComputer.new(code),
-    IntComputer.new(code),
-    IntComputer.new(code),
-    IntComputer.new(code)
+  IntComputer.new(code),
+  IntComputer.new(code),
+  IntComputer.new(code),
+  IntComputer.new(code),
+  IntComputer.new(code)
 ]
 
 phase_settings.permutation.each do |phase_setting|
@@ -21,16 +23,16 @@ phase_settings.permutation.each do |phase_setting|
     IntComputer.new(code, name: 'D', inputs: [phase_setting[3]]),
     IntComputer.new(code, name: 'E', inputs: [phase_setting[4]])
   ]
-  
+
   amplifiers.each(&:run)
 
-  while(!amplifiers.all?(&:ended)) do
+  until amplifiers.all?(&:ended)
     padded_amps = [amplifiers[4]] + amplifiers + [amplifiers[0]]
     padded_amps.each_cons(2) do |amp_a, amp_b|
-        if (amp_b.waiting && amp_a.output.length > 0)
-            amp_b.inputs << amp_a.output.shift
-            amp_b.run
-        end
+      if amp_b.waiting && amp_a.output.length.positive?
+        amp_b.inputs << amp_a.output.shift
+        amp_b.run
+      end
     end
   end
 

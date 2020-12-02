@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 Square = Struct.new(:id, :left, :top, :width, :height, keyword_init: true) do
   def right
@@ -15,12 +16,12 @@ squares = []
 matrix = Hash.new(0)
 
 File.open('day3.txt', 'r') do |f|
-  while !f.eof?
-     entry = f.readline.strip
+  until f.eof?
+    entry = f.readline.strip
 
-     matches = entry.match(/\A#(?<id>\d+) @ (?<left>\d+),(?<top>\d+):\s*(?<width>\d+)x(?<height>\d+)\Z/)
-     hash = Hash[matches.names.zip(matches.captures.map(&:to_i))]
-     squares << Square.new(hash)
+    matches = entry.match(/\A#(?<id>\d+) @ (?<left>\d+),(?<top>\d+):\s*(?<width>\d+)x(?<height>\d+)\Z/)
+    hash = Hash[matches.names.zip(matches.captures.map(&:to_i))]
+    squares << Square.new(hash)
   end
 end
 

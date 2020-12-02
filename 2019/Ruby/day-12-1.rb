@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'awesome_print'
 
-Moon = Struct.new(:x,:y,:z,:vx,:vy,:vz) do
+Moon = Struct.new(:x, :y, :z, :vx, :vy, :vz) do
   def kinetic
     vx.abs + vy.abs + vz.abs
   end
@@ -17,7 +19,7 @@ end
 input = File.read('day-12.txt')
 
 def parse_position(line)
-  match = line.match(/\<x=(?<x>[-\d]+),\s*y=(?<y>[-\d]+),\s*z=(?<z>[-\d]+)\>/)
+  match = line.match(/<x=(?<x>[-\d]+),\s*y=(?<y>[-\d]+),\s*z=(?<z>[-\d]+)>/)
   Moon.new(match[:x].to_i, match[:y].to_i, match[:z].to_i, 0, 0, 0)
 end
 
@@ -57,11 +59,10 @@ def apply_movement
   end
 end
 
-
 $moons = input.lines.map { |l| parse_position(l) }
 1000.times do
   apply_gravity
   apply_movement
 end
 
-puts $moons.sum { |m| m.energy }
+puts $moons.sum(&:energy)

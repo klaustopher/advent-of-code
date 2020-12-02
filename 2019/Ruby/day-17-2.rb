@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './int_computer'
 require_relative './helpers'
 

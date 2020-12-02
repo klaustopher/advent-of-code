@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './int_computer'
 require 'set'
 
@@ -45,30 +47,30 @@ code = File.read('day-11.txt').split(',').map(&:to_i)
 $size = 150
 $grid = Array.new($size) { Array.new($size) { 0 } }
 
-$marker = Marker.new($size/2, $size/2, :up)
+$marker = Marker.new($size / 2, $size / 2, :up)
 $grid[$marker.y][$marker.x] = 1
 
 icm = IntComputer.new(code, inputs: [$grid[$marker.y][$marker.x]])
 
 def paint_grid
   $grid.each_with_index do |row, y|
-    row.each_with_index  do |col, x|
+    row.each_with_index do |col, x|
       if $marker.x == x && $marker.y == y
         print case $marker.direction
-      when :up then '^'
-      when :down then 'v'
-      when :right then '<'
-      when :left then '>'
+              when :up then '^'
+              when :down then 'v'
+              when :right then '<'
+              when :left then '>'
+              end
+      else
+        print col == 1 ? '#' : '.'
       end
-    else
-      print col == 1 ? '#' : '.'
     end
+    puts
   end
-  puts
-end
 end
 
-while(!icm.ended) do
+until icm.ended
   icm.run
 
   color = icm.output.shift

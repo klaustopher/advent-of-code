@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
+
 require 'set'
 
 entries = []
 
 File.open('day2.txt', 'r') do |f|
-  while !f.eof?
-    entries << f.readline.strip
-  end
+  entries << f.readline.strip until f.eof?
 end
 
 two_letters = 0
@@ -18,11 +18,10 @@ def letter_count(word)
   end
 end
 
-
 entries.each do |entry|
   count = letter_count(entry)
-  two_letters += 1 if  count.values.include?(2)
-  three_letters += 1 if  count.values.include?(3)
+  two_letters += 1 if count.values.include?(2)
+  three_letters += 1 if count.values.include?(3)
 end
 
 puts two_letters * three_letters

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'date'
 require 'time'
@@ -8,16 +9,16 @@ LogEntry = Struct.new(:datetime, :guard, :action, keyword_init: true)
 logs = []
 
 File.open('day4.txt', 'r') do |f|
-  while !f.eof?
-     entry = f.readline.strip
+  until f.eof?
+    entry = f.readline.strip
 
-     m = entry.match(/\A\[(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2}) (?<hour>\d{2}):(?<minute>\d{2})\]( Guard #(?<guard>\d+))? (?<action>.+)\Z/)
+    m = entry.match(/\A\[(?<year>\d{4})-(?<month>\d{2})-(?<day>\d{2}) (?<hour>\d{2}):(?<minute>\d{2})\]( Guard #(?<guard>\d+))? (?<action>.+)\Z/)
 
-     logs << LogEntry.new({
-       datetime: Time.new(m[:year].to_i, m[:month].to_i, m[:day].to_i, m[:hour].to_i, m[:minute].to_i),
-       guard: m[:guard].to_i,
-       action: m[:action]
-     })
+    logs << LogEntry.new({
+                           datetime: Time.new(m[:year].to_i, m[:month].to_i, m[:day].to_i, m[:hour].to_i, m[:minute].to_i),
+                           guard: m[:guard].to_i,
+                           action: m[:action]
+                         })
   end
 end
 
@@ -83,11 +84,11 @@ max_minute_sleeping_count = 0
   guards.each do |guard|
     count = sleeping_count_per_guard_per_minute(guard, minute)
 
-    if count > max_minute_sleeping_count
-      max_minute_guard = guard
-      max_minute = minute
-      max_minute_sleeping_count = count
-    end
+    next unless count > max_minute_sleeping_count
+
+    max_minute_guard = guard
+    max_minute = minute
+    max_minute_sleeping_count = count
   end
 end
 

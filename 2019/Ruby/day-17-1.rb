@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './int_computer'
 require_relative './helpers'
 
@@ -26,10 +28,10 @@ sum = 0
 traverse_grid do |y, x, item|
   next unless item == '#'
 
-  left = (x - 1 >= 0 && $grid[y][x-1] == '#')
-  right = (x + 1 < width && $grid[y][x+1] == '#')
-  top = (y - 1 >= 0 && $grid[y-1][x] == '#')
-  bottom = (y + 1 < height && $grid[y+1][x] == '#')
+  left = (x - 1 >= 0 && $grid[y][x - 1] == '#')
+  right = (x + 1 < width && $grid[y][x + 1] == '#')
+  top = (y - 1 >= 0 && $grid[y - 1][x] == '#')
+  bottom = (y + 1 < height && $grid[y + 1][x] == '#')
 
   sum += x * y if left && right && top && bottom
 end

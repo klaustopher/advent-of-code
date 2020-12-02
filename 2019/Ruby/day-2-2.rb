@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'int_computer'
 
 input = File.read('day-2.txt').split(',').map(&:to_i)
@@ -12,7 +14,6 @@ end
 
 0.upto(99).each do |noun|
   0.upto(99).each do |verb|
-    puts noun*100+verb if compute(input.dup, noun, verb) == 19690720
+    puts noun * 100 + verb if compute(input.dup, noun, verb) == 19_690_720
   end
 end
-

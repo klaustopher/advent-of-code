@@ -1,5 +1,6 @@
+# frozen_string_literal: true
 
-Point = Struct.new(:x,:y, :seen, keyword_init: true) do
+Point = Struct.new(:x, :y, :seen, keyword_init: true) do
   def to_s
     "(#{x},#{y})"
   end
@@ -11,7 +12,7 @@ input = File.read('day-10.txt')
 
 input.lines.each_with_index do |line, row|
   line.chars.each_with_index do |point, col|
-    $asteroids << Point.new(x: col.to_r, y: row.to_r) if point == "#"
+    $asteroids << Point.new(x: col.to_r, y: row.to_r) if point == '#'
   end
 end
 

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'awesome_print'
 
@@ -7,7 +8,7 @@ require 'awesome_print'
 @completed_steps = []
 
 File.open('day7.txt', 'r') do |f|
-  while !f.eof?
+  until f.eof?
     line = f.readline
     m = line.match(/Step ([A-Z]) must be finished before step ([A-Z]) can begin/)
 
@@ -28,12 +29,10 @@ def step_that_can_be_done
   considered_steps = @available_steps - @completed_steps
 
   considered_steps.select do |step|
-    (@steps.fetch(step, []) - @completed_steps).size == 0
-  end.sort.first
+    (@steps.fetch(step, []) - @completed_steps).size.zero?
+  end.min
 end
 
-while @available_steps.size != @completed_steps.size
-  @completed_steps << step_that_can_be_done
-end
+@completed_steps << step_that_can_be_done while @available_steps.size != @completed_steps.size
 
 puts "Order: #{@completed_steps.join}"

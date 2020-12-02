@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'int_computer'
 
 code = File.read('day-2.txt').split(',').map(&:to_i)
