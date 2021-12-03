@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 
-data = File.read('2-test.txt').lines
+$data = File.read(ARGV[0]).lines.map(&:chomp)
 
 depth = 0
 position = 0
 aim = 0
 
-data.each do |line|
+$data.each do |line|
   command, number = line.scan(/(\w+) (\d+)/).flatten
 
   case command
