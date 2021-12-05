@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 $data = File.read(ARGV[0]).lines.map(&:chomp)
 

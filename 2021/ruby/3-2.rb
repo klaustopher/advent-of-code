@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 $data = File.read(ARGV[0]).lines.map(&:chomp)
 $number_of_bits = $data.first.length
@@ -36,4 +37,3 @@ def co2_scrubber_rating
 end
 
 puts oxygen_generator_rating.to_i(2) * co2_scrubber_rating.to_i(2)
-

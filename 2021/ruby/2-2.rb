@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 $data = File.read(ARGV[0]).lines.map(&:chomp)
 
@@ -10,7 +11,7 @@ $data.each do |line|
   command, number = line.scan(/(\w+) (\d+)/).flatten
 
   case command
-  when 'forward' then
+  when 'forward'
     position += number.to_i
     depth += aim * number.to_i
   when 'down' then aim += number.to_i

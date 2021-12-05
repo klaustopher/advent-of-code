@@ -1,15 +1,16 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 $boards = []
 
 File.open(ARGV[0], 'r') do |file|
   $drawn_numbers = file.readline.split(',').map(&:to_i)
 
-  while not file.eof? do
+  until file.eof?
     file.readline # skip empty line
     board = []
     5.times do
-      board << file.readline.split(' ').map(&:to_i)
+      board << file.readline.split.map(&:to_i)
     end
 
     $boards << board
@@ -17,7 +18,7 @@ File.open(ARGV[0], 'r') do |file|
 end
 
 def check_winning_row(board, check_row)
-  board[check_row].all? { |cell| cell.nil? }
+  board[check_row].all?(&:nil?)
 end
 
 def check_winning_column(board, check_col)
@@ -27,21 +28,17 @@ end
 def mark_number(board, number)
   board.each_with_index do |row, row_id|
     row.each_with_index do |cell, col_id|
-      if cell == number
-        board[row_id][col_id] = nil
-      end
+      board[row_id][col_id] = nil if cell == number
     end
   end
 end
 
 def has_won?(board)
   5.times do |i|
-    if check_winning_row(board, i) || check_winning_column(board, i)
-      return true
-    end
+    return true if check_winning_row(board, i) || check_winning_column(board, i)
   end
 
-  return false
+  false
 end
 
 last_sum_of_unmarked = 0
@@ -55,12 +52,12 @@ $drawn_numbers.each do |number|
 
     mark_number(board, number)
 
-    if has_won?(board)
-      puts "Eliminating board #{i}"
-      eliminiated_boards << i
-      last_sum_of_unmarked = board.flatten.compact.sum
-      last_winning_number = number
-    end
+    next unless has_won?(board)
+
+    puts "Eliminating board #{i}"
+    eliminiated_boards << i
+    last_sum_of_unmarked = board.flatten.compact.sum
+    last_winning_number = number
   end
 end
 

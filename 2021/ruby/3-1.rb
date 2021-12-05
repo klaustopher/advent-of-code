@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 data = File.read('3-test.txt').lines.map(&:chomp)
 
-gamma_rate = ""
-epsilon_rate = ""
+gamma_rate = ''
+epsilon_rate = ''
 
 number_of_bits = data.first.length
 
