@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Line
   attr_reader :from, :to, :points
 
@@ -49,4 +51,3 @@ class Line
                       end
     end
 end
-
