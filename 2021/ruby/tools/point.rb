@@ -2,10 +2,20 @@
 
 class Point
   attr_accessor :x, :y
+  attr_reader :meta
 
   def initialize(x, y)
     @x = x
     @y = y
+    @meta = {}
+  end
+
+  def manhattan_distance(other)
+    (x - other.x).abs + (y - other.y).abs
+  end
+
+  def euclidian_distance(other)
+    Math.sqrt((x - other.x).abs**2 + (y - other.y).abs**2)
   end
 
   def ==(other)
@@ -19,7 +29,7 @@ class Point
   alias eql? ==
 
   def inspect
-    "(#{x}, #{y})"
+    "(#{x}, #{y} #{meta})"
   end
 
   alias to_s inspect
