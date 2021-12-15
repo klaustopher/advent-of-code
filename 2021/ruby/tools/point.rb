@@ -2,12 +2,10 @@
 
 class Point
   attr_accessor :x, :y
-  attr_reader :meta
 
   def initialize(x, y)
     @x = x
     @y = y
-    @meta = {}
   end
 
   def manhattan_distance(other)
@@ -29,7 +27,7 @@ class Point
   alias eql? ==
 
   def inspect
-    "(#{x}, #{y} #{meta})"
+    "(#{"%03d" % x}, #{"%03d" % y})"
   end
 
   alias to_s inspect
