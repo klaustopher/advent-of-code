@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 require_relative './tools/point'
+require 'set'
 
 $matrix = File.read(ARGV[0]).lines.map { |line| line.chomp.chars.map(&:to_i) }
 
@@ -45,8 +46,10 @@ goal = Point.new($matrix_size - 1, $matrix_size - 1)
 
 $metadata = Hash.new { |h, k| h[k] = {} }
 
-$open_set = [start]
-$closed_set = []
+$open_set = Set.new
+$closed_set = Set.new
+
+$open_set << start
 
 def cost(point)
   $final_matrix[point]
