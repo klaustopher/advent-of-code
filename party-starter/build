@@ -1,0 +1,2 @@
+#!/bin/sh
+crystal build ./party-starter/party-starter.cr --release -o get-started

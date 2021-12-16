@@ -1,5 +1,6 @@
 require "option_parser"
 require "colorize"
+require "file_utils"
 
 require "./cli_option_parser"
 require "./languages/*"
@@ -20,4 +21,10 @@ end
 puts "We are programming in #{programming_language.colorize(:red)}, AoC #{current_time.year.colorize(:yellow)}, Day #{current_time.day.colorize(:green)}"
 
 language_tool = LANGUAGE_MAPPING[programming_language].new(day: current_time.day, year: current_time.year)
+
+# Make sure that the folder exists
+FileUtils.mkdir_p(language_tool.folder)
+
 language_tool.setup_code
+
+puts "All Setup! Happy Coding and good luck!".colorize(:green)
