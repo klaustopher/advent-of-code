@@ -1,0 +1,5 @@
+# Advent of Code <%= @year %> - Day <%= @day %>
+# See https://adventofcode.com/<%= @year %>/day/<%= @day %>
+
+data = File.read_lines("day<%= "%02d" % @day %>-sample.txt")
+pp data

@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Advent of Code 2021 - Day 18
+
+require 'json'
+require_relative './tools/snailfish_math'
+$data = File.read(ARGV[0]).lines.map(&:chomp).map { |line| JSON.parse(line) }
+
+result = nil
+$data.each do |input|
+  if result.nil?
+    result = SnailfishMath.parse(input)
+  else
+    result += SnailfishMath.parse(input)
+  end
+  result.reduce
+end
+puts result.magnitude
