@@ -25,3 +25,9 @@ Will generate a file in `$YEAR/$LANGUAGE/$DAY.$EXT` based on the template of you
 The templates can be changed and don't need a recompile
 
 HAPPY HACKING, from 🎅 Santa klaustopher
+
+## Encrypted inputs
+
+As the author of AoC wishes that we don't publish the input files, those files are encrypted here using [git-crypt](https://github.com/AGWA/git-crypt) to encrypt all the files. So, please use your own inputs.
+
+If you are me and want to use the repo on another machine, the key is in your 1Password. After cloning the repository you can unlock it with `git-crypt unlock aoc.key`
